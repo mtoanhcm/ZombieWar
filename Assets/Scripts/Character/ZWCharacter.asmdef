@@ -1,0 +1,18 @@
+{
+    "name": "ZWCharacter",
+    "rootNamespace": "ZombieWar.Character",
+    "references": [
+        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9",
+        "GUID:9b91e36583fe7e84c8f2a233558dae57",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
