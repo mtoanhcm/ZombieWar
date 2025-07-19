@@ -9,6 +9,7 @@ namespace ZombieWar.Character
         private CharacterHealth characterHealth;
         private CharacterJoystickInput characterJoystickInput;
         private CharacterMoveByDirection characterMoveByDirection;
+        private MainCharacterAnimation mainCharAnimation;
 
         public override void Spawn(MainCharacterData characterData)
         {
@@ -17,6 +18,16 @@ namespace ZombieWar.Character
             InitCharacterHealth();
             InitCharacterJoystickInput();
             InitCharacterMovement();
+            InitCharacterAnimation();
+        }
+
+        private void InitCharacterAnimation()
+        {
+            if(mainCharAnimation == null)
+            {
+                mainCharAnimation = gameObject.AddComponent<MainCharacterAnimation>();
+                characterJoystickInput.OnMoveInputChanged += mainCharAnimation.OnPlayMovementAnimByInput;
+            }
         }
 
         private void InitCharacterJoystickInput()
@@ -42,10 +53,10 @@ namespace ZombieWar.Character
             if (characterMoveByDirection == null)
             {
                 characterMoveByDirection = gameObject.AddComponent<CharacterMoveByDirection>();
+                characterJoystickInput.OnMoveInputChanged += characterMoveByDirection.UpdateMoveDirection;
             }
 
-            characterJoystickInput.OnMoveInputChanged = characterMoveByDirection.UpdateMoveDirection;
-            characterMoveByDirection.Init(characterData.MovementSpeed);
+            characterMoveByDirection.Init(characterData.MovementSpeed, characterData.RotateSpeed);
         }
     
     }
