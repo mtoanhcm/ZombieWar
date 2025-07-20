@@ -41,6 +41,7 @@ namespace ZombieWar.Character
 
         public void UpdateMoveDirection(Vector2 direction)
         {
+            Debug.Log($"UpdateMoveDirection: {direction}");
             moveDirection = direction;
         }
 

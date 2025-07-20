@@ -5,7 +5,6 @@ using ZombieWar.Core;
 
 namespace ZombieWar.Projectile
 {
-    [RequireComponent(typeof(LineRenderer))]
     public class StraightBulletProjectile : ProjectileBase
     {
         private Vector3 direction;

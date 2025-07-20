@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d66e42a5aa70164398b6378e18c5ad1, type: 3}
+  m_Name: AK12WeaponConfig
+  m_EditorClassIdentifier: 
+  ID: 2
+  Damage: 15
+  Cooldown: 0.1
+  BulletID: 1
+  MaxMagazineAmmo: 30
+  AmmoPerShoot: 1
+  SnapPosition: {x: 0.1948, y: -0.013, z: -0.0328}
+  SnapRotationEuler: {x: 6.622, y: 97.66, z: 87.098}
