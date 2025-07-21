@@ -9,6 +9,7 @@ namespace ZombieWar.Core
         public float CurrentHealth { get; private set; }
         public float MaxHealth { get; private set; }
         public float MovementSpeed { get; private set; }
+        public float RotateSpeed { get; private set; }
 
         public CharacterBaseData(CharacterBaseConfig config)
         {
@@ -17,6 +18,7 @@ namespace ZombieWar.Core
             MaxHealth = config.MaxHealth;
             CurrentHealth = config.MaxHealth; // Initialize current health to max health
             MovementSpeed = config.MovementSpeed;
+            RotateSpeed = config.RotateSpeed;
         }
 
         public void LevelUp()

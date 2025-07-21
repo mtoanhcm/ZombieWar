@@ -1,0 +1,19 @@
+{
+    "name": "ZWSpawner",
+    "rootNamespace": "ZombieWar.Spawner",
+    "references": [
+        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9",
+        "GUID:4b9714e92b753ac48b54620157301a41",
+        "GUID:a7c868a5629712b4e868d706764cd70f",
+        "GUID:cb7e79219bdbb7847a57bfbf2bc280cb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

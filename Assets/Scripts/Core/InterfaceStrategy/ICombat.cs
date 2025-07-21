@@ -4,7 +4,6 @@ namespace ZombieWar.Core
 {
     public interface ICombat
     {
-        GameObject Target { get; }
-        void Attack(Vector3 direction);
+        GameObject Self { get; }
     }
 }

@@ -1,32 +1,48 @@
 using UnityEngine;
 using ZombieWar.Core;
-using ZombieWar.Projectile;
 
-namespace ZombieWar.Spawner
+namespace ZombieWar.Projectile
 {
     public class ProjectileSpawner : MonoBehaviour
     {
         [SerializeField]
-        private StraightBulletProjectile strightBulletPrefab;
-
+        private ProjectileID bulletID;
         private ObjectPool<ProjectileBase> straightBulletPool;
 
         public void Start()
         {
-            straightBulletPool = new ObjectPool<ProjectileBase>(strightBulletPrefab, 10, transform);
+            var bulletPrefab = Resources.Load<ProjectileBase>($"Projectile/{bulletID}");
+            if (bulletPrefab == null)
+            {
+                DebugCustom.LogError($"Projectile prefab for ID {bulletID} not found in Resources/Projectile.");
+                return;
+            }
+
+            straightBulletPool = new ObjectPool<ProjectileBase>(bulletPrefab, 10);
         }
 
-        public T SpawnBullet<T>(ProjectileID bulletID) where T : ProjectileBase
+        public T SpawnBullet<T>(bool isActiveBullet = true) where T : ProjectileBase
         {
-            var bullet = straightBulletPool.GetObject() as T;
-
-            bullet.OnDestroy += () =>
+            if (straightBulletPool == null)
             {
-                bullet.OnDestroy = null;
-                straightBulletPool.ReturnObject(bullet);
-            };
+                DebugCustom.LogError("Projectile pool is not initialized.");
+                return null;
+            }
 
+            var bullet = straightBulletPool.GetObject(isActiveBullet) as T;
             return bullet;
+        }
+
+        public void ReturnBullet(ProjectileBase bullet)
+        {
+            if (bullet == null)
+            {
+                DebugCustom.LogError("Cannot return a null bullet.");
+                return;
+            }
+
+            straightBulletPool.ReturnObject(bullet);
+            bullet.OnDestroy?.Invoke();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace ZombieWar.Character
     [CreateAssetMenu(fileName = "MainCharacterConfig", menuName = "Config/CharacterConfig/MainCharacterConfig", order = 1)]
     public class MainCharacterConfig : CharacterBaseConfig
     {
-        public float RotateSpeed;
+        [Header("Start up weapon")]
+        public WeaponBaseConfig[] StartUpWeapons;
     }
 }

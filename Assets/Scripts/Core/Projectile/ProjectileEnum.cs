@@ -5,6 +5,6 @@ namespace ZombieWar.Core
     public enum ProjectileID
     {
         None,
-        GunBullet,
+        P_762x39mm,
     }
 }
