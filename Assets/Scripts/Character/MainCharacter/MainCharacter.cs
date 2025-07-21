@@ -1,18 +1,20 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 using ZombieWar.Core;
 
 namespace ZombieWar.Character
 {
     public class MainCharacter : CharacterBase<MainCharacterData>
     {
+        [SerializeField]
+        private WeaponBaseConfig[] startWeapons;
+
         private CharacterHealth characterHealth;
         private CharacterJoystickInput characterJoystickInput;
         private CharacterMoveByDirection characterMoveByDirection;
         private MainCharacterAnimation mainCharAnimation;
         private CharacterModelView characterModelView;
-        private CharacterInventory weaponInventory;
+        private MainCharacterWeaponHolder characterWeaponHolder;
 
         public override void Spawn(MainCharacterData characterData)
         {
@@ -23,17 +25,20 @@ namespace ZombieWar.Character
             InitCharacterMovement();
             InitCharacterModelView();
             InitCharacterAnimation();
-            InitCharacterInventory();
+            InitCharacterWeaponHolster();
         }
 
-        private void InitCharacterInventory()
+        private void InitCharacterWeaponHolster()
         {
-            //if(weaponInventory == null && !TryGetComponent(out weaponInventory))
-            //{
-            //    weaponInventory = gameObject.AddComponent<CharacterInventory>();
-            //}
+            if (characterWeaponHolder == null && !TryGetComponent(out characterWeaponHolder)) { 
+                characterWeaponHolder = gameObject.AddComponent<MainCharacterWeaponHolder>();
+                characterWeaponHolder.Init();
+            }
 
-            //weaponInventory.Init(characterData.InitialWeapons);
+            foreach (var config in startWeapons) { 
+                WeaponSpawnerManager.Instance.SpawnHitScanWeapon(config, out IWeapon weapon, characterModelView.WeaponGrabSocket);
+                characterWeaponHolder.AddWeapon(weapon);
+            }
         }
 
         private void InitCharacterModelView()

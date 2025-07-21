@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 364100831493934115}
   - component: {fileID: 2403605745734821517}
   m_Layer: 0
-  m_Name: Ak12
+  m_Name: AK12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 2167499438924380918}
   - component: {fileID: 1066898922842317675}
   m_Layer: 0
-  m_Name: FirePos
+  m_Name: BulletSpawerPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 700cc8db280b1ba44bccbc91e858f7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strightBulletPrefab: {fileID: -7300701726061462377, guid: a102681302c4b2540966b4347ae1d24a, type: 3}
+  bulletID: 1
 --- !u!1 &4009986130024622112
 GameObject:
   m_ObjectHideFlags: 0

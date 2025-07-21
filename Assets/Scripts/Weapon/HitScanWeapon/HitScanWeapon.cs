@@ -3,20 +3,22 @@ using ZombieWar.Core;
 
 namespace ZombieWar.Weapon
 {
-    public class HitScanWeapon : WeaponBase<HitScanWeaponData>
+    public class HitScanWeapon : WeaponBase
     {
         private MagazineAttachment magazine;
+        private HitScanWeaponData hitScanWeaponData;
 
-        public override void Spawn(HitScanWeaponData weaponData)
+        public override void Spawn<T>(T weaponData)
         {
             base.Spawn(weaponData);
 
-            AddAttachment();
+            hitScanWeaponData = weaponData as HitScanWeaponData;
+            magazine = new MagazineAttachment(hitScanWeaponData.MaxMagazineAmmo);
         }
 
-        public override void AddAttachment()
+        public override bool AddAttachment()
         {
-            magazine = new MagazineAttachment(weaponData.MaxMagazineAmmo);
+            return true;
         }
 
         public override void Attack()
@@ -32,7 +34,7 @@ namespace ZombieWar.Weapon
         public void Reload()
         {
             //Infinite ammo
-            magazine.AddAmmo(weaponData.MaxMagazineAmmo);
+            magazine.AddAmmo(hitScanWeaponData.MaxMagazineAmmo);
         }
 
         public void SnapToHandGrabPoint(Transform grabPoint)
@@ -40,8 +42,8 @@ namespace ZombieWar.Weapon
             transform.SetParent(grabPoint);
 
             transform.SetLocalPositionAndRotation(
-                weaponData.SnapHandPos, 
-                Quaternion.Euler(weaponData.SnapHandRotEular));
+                hitScanWeaponData.SnapHandPos, 
+                Quaternion.Euler(hitScanWeaponData.SnapHandRotEular));
         }
     }
 }

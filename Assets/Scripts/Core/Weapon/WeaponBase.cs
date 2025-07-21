@@ -3,17 +3,19 @@ using UnityEngine;
 
 namespace ZombieWar.Core
 {
-    public abstract class WeaponBase<T> : MonoBehaviour where T : WeaponBaseData
+    public abstract class WeaponBase : MonoBehaviour, IWeapon
     {
         public Transform GripPos;
-        protected T weaponData;
+        protected WeaponBaseData weaponBaseData;
 
-        public virtual void Spawn(T weaponData)
+        public WeaponBaseData BaseData => weaponBaseData;
+
+        public virtual void Spawn<T>(T weaponData) where T : WeaponBaseData
         {
-            this.weaponData = weaponData;
+            weaponBaseData = weaponData;
         }
 
         public abstract void Attack();
-        public abstract void AddAttachment();
+        public abstract bool AddAttachment();
     }
 }

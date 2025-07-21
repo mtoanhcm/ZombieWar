@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AK12WeaponConfig
   m_EditorClassIdentifier: 
   ID: 2
+  Type: 2
   Damage: 15
   Cooldown: 0.1
   BulletID: 1

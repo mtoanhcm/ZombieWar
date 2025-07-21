@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -7300701726061462377}
   - component: {fileID: 3879563395495957373}
   m_Layer: 0
-  m_Name: StraightBullet_Projectile
+  m_Name: P_762x39mm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
