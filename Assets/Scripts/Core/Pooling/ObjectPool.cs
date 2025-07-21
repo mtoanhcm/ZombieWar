@@ -22,7 +22,7 @@ namespace ZombieWar.Core
             ExpandPool(size);
         }
 
-        public T GetObject()
+        public T GetObject(bool isActiveObject = true)
         {
             if (availableObjects.Count <= SIZE_NEED_INCREASE)
             {
@@ -30,7 +30,11 @@ namespace ZombieWar.Core
             }
 
             T obj = availableObjects.Dequeue();
-            obj.gameObject.SetActive(true);
+
+            if (isActiveObject) {
+                obj.gameObject.SetActive(true);
+            }
+            
             return obj;
         }
 

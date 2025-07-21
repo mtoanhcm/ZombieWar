@@ -15,9 +15,11 @@ MonoBehaviour:
   ID: 2
   Type: 2
   Damage: 15
-  Cooldown: 0.1
+  Cooldown: 0.15
   BulletID: 1
   MaxMagazineAmmo: 30
   AmmoPerShoot: 1
+  ShootingRange: 10
+  SpreadAngle: 5
   SnapPosition: {x: 0.1948, y: -0.013, z: -0.0328}
   SnapRotationEuler: {x: 6.622, y: 97.66, z: 87.098}

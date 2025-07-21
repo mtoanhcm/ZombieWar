@@ -48,5 +48,15 @@ namespace ZombieWar.Character
 
             return false;
         }
+
+        public override bool GetWeapon(CharacterWeaponEquipSlot slot, out IWeapon weapon)
+        {
+            if(weaponSlots.TryGetValue(slot, out weapon) && weapon != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

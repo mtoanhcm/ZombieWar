@@ -7,10 +7,8 @@ namespace ZombieWar.Projectile
 {
     public class StraightBulletProjectile : ProjectileBase
     {
-        private Vector3 direction;
         private Vector3 hitPos;
         private float travelTime;
-        private Action hitAction;
 
 
         public override void Spawn(float moveTime, HitData hitData)
@@ -18,15 +16,15 @@ namespace ZombieWar.Projectile
             base.Spawn(moveTime, hitData);
 
             transform.LookAt(hitData.TargetPos);
+            transform.position = hitData.FirePos;
 
-            direction = (hitData.TargetPos - hitData.FirePos).normalized;
+            hitPos = hitData.TargetPos;
 
-            if(Physics.Raycast(hitData.FirePos, direction, out RaycastHit hitInfo, float.MaxValue, hitData.TargetLayer))
-            {
-                hitPos = hitInfo.point;
-                travelTime = 0;
-                canMove = true;
-            }
+            travelTime = 0;
+
+            gameObject.SetActive(true);
+
+            canMove = true;
         }
 
         protected override void MoveToTarget()
@@ -40,7 +38,8 @@ namespace ZombieWar.Projectile
             {
                 newPos = hitPos;
                 canMove = false;
-                hitAction?.Invoke();
+                hitData.OnHitTarget?.Invoke(this);
+                return;
             }
             else { 
                 newPos = Vector3.Lerp(hitData.FirePos, hitPos, travelFraction);

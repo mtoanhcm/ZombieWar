@@ -5,10 +5,12 @@ namespace ZombieWar.Core
 {
     public abstract class WeaponBase : MonoBehaviour, IWeapon
     {
+        [Header("Weapon base attribute")]
         public Transform GripPos;
-        protected WeaponBaseData weaponBaseData;
-
         public WeaponBaseData BaseData => weaponBaseData;
+
+        protected ICombat owner;
+        protected WeaponBaseData weaponBaseData;
 
         public virtual void Spawn<T>(T weaponData) where T : WeaponBaseData
         {
@@ -17,5 +19,7 @@ namespace ZombieWar.Core
 
         public abstract void Attack();
         public abstract bool AddAttachment();
+
+        public abstract void SetOwner(ICombat owner);
     }
 }

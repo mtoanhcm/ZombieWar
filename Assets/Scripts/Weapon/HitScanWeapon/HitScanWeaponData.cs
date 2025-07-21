@@ -8,6 +8,8 @@ namespace ZombieWar.Weapon
         public ProjectileID BulletID { get; private set; }
         public int MaxMagazineAmmo { get; private set; }
         public int AmmoPerShoot { get; private set; }
+        public float ShootingRange { get; private set; }
+        public float SpreadAngle { get; private set; }
 
         public Vector3 SnapHandPos { get; private set; }
         public Vector3 SnapHandRotEular { get; private set; }
@@ -19,6 +21,8 @@ namespace ZombieWar.Weapon
             AmmoPerShoot = config.AmmoPerShoot;
             SnapHandPos = config.SnapPosition;
             SnapHandRotEular = config.SnapRotationEuler;
+            ShootingRange = config.ShootingRange;
+            SpreadAngle = config.SpreadAngle;
         }
     }
 }

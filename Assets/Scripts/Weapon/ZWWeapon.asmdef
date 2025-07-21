@@ -2,7 +2,8 @@
     "name": "ZWWeapon",
     "rootNamespace": "ZombieWar.Weapon",
     "references": [
-        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9"
+        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9",
+        "GUID:cb7e79219bdbb7847a57bfbf2bc280cb"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

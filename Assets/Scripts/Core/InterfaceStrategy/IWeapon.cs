@@ -6,6 +6,7 @@ namespace ZombieWar.Core
     {
         WeaponBaseData BaseData { get; }
         void Attack();
+        void SetOwner(ICombat owner);
         bool AddAttachment();
     }
 }

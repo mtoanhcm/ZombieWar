@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GripPos: {fileID: 5047603031414463399}
+  firePoint: {fileID: 1066898922842317675}
 --- !u!1 &2502592354342004784
 GameObject:
   m_ObjectHideFlags: 0

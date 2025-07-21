@@ -10,6 +10,8 @@ namespace ZombieWar.Weapon
         public ProjectileID BulletID;
         public int MaxMagazineAmmo;
         public int AmmoPerShoot;
+        public float ShootingRange;
+        public float SpreadAngle;
 
         [Header("Hardcode snap position to main character hand")]
         public Vector3 SnapPosition;

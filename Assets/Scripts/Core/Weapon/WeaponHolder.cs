@@ -12,6 +12,7 @@ namespace ZombieWar.Core
             weaponSlots = new Dictionary<CharacterWeaponEquipSlot, IWeapon>();
         }
 
+        public abstract bool GetWeapon(CharacterWeaponEquipSlot slot, out IWeapon weapon);
         public abstract bool AddWeapon(IWeapon weaponData);
         public abstract bool RemoveWeapon(IWeapon weaponData);
     }

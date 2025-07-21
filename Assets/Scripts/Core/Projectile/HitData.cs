@@ -8,6 +8,6 @@ namespace ZombieWar.Core
         public float Damage;
         public Vector3 FirePos;
         public Vector3 TargetPos;
-        public LayerMask TargetLayer;
+        public Action<ProjectileBase> OnHitTarget;
     }
 }

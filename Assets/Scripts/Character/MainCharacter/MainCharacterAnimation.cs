@@ -2,13 +2,13 @@ using System;
 using UnityEngine;
 using ZombieWar.Config;
 using Sirenix.OdinInspector;
+using ZombieWar.Core;
+using System.Collections.Generic;
 
 namespace ZombieWar.Character
 {
     public class MainCharacterAnimation : MonoBehaviour
     {
-        public Func<bool> CheckCombatState;
-
         [SerializeField]
         private MainCharacterAnimationConfig config;
 
@@ -16,8 +16,12 @@ namespace ZombieWar.Character
         private int velocityXHash;
         private int velocityZHash;
         private int isInCombatHash;
+        private bool isInCombat;
 
         private RuntimeAnimatorController defaultAnimatorController;
+
+        private Dictionary<WeaponType, RuntimeAnimatorController> weaponAnimationControllersDic;
+        
 
         private void Awake()
         {
@@ -27,13 +31,18 @@ namespace ZombieWar.Character
             isInCombatHash = Animator.StringToHash("IsInCombat");
 
             defaultAnimatorController = animator.runtimeAnimatorController;
+
+            weaponAnimationControllersDic = new Dictionary<WeaponType, RuntimeAnimatorController>
+            {
+                { WeaponType.Melee, defaultAnimatorController },
+                { WeaponType.Rifle, config.RifleAnimationController },
+            };
         }
 
         public void OnPlayMovementAnimByInput(Vector2 movementDirect) {
 
             var velocityX = movementDirect.x;
             var velocityZ = movementDirect.y;
-            bool isInCombat = CheckCombatState != null && CheckCombatState.Invoke();
 
             if (!isInCombat)
             {
@@ -42,12 +51,21 @@ namespace ZombieWar.Character
 
             animator.SetFloat(velocityXHash, velocityX);
             animator.SetFloat(velocityZHash, velocityZ);
-            animator.SetBool(isInCombatHash, isInCombat);
         }
 
-        [Button]
-        public void OnEquipRifle() {
+        public void OnChangeAnimByWeapon(IWeapon weaponChanged) {
+            if (weaponAnimationControllersDic.TryGetValue(weaponChanged.BaseData.Type, out var controller))
+            {
+                animator.runtimeAnimatorController = controller;
+                return;
+            }
+
             animator.runtimeAnimatorController = config.RifleAnimationController;
+        }
+
+        public void OnCombatChanged(Vector3 combatDirection) { 
+            isInCombat = combatDirection != Vector3.zero;
+            animator.SetBool(isInCombatHash, isInCombat);
         }
     }
 }
