@@ -1,4 +1,3 @@
-using UnityEngine;
 
 namespace ZombieWar.Core
 {
@@ -7,6 +6,8 @@ namespace ZombieWar.Core
         None,
         EAGLE,
         AK12,
+
+        ZombieClaw,
     }
 
     public enum WeaponType

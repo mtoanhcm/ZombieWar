@@ -4,22 +4,26 @@ using ZombieWar.Core;
 
 namespace ZombieWar.Character
 {
-    public class MainCharacter : CharacterBase<MainCharacterData>
+    public class MainCharacter : CharacterBase
     {
         [SerializeField]
         private WeaponBaseConfig[] startWeapons;
+
+        private MainCharacterData mainCharacterData;
 
         private CharacterHealth characterHealth;
         private CharacterJoystickInput characterJoystickInput;
         private CharacterMoveByDirection characterMoveByDirection;
         private MainCharacterAnimation mainCharAnimation;
         private CharacterModelView characterModelView;
-        private MainCharacterWeaponHolder characterWeaponHolder;
-        private MainCharacterCombat mainCharacterCombat;
+        private CharacterWeaponHolder characterWeaponHolder;
+        private CharacterCombat mainCharacterCombat;
 
-        public override void Spawn(MainCharacterData characterData)
+        public override void Spawn<T>(T characterData)
         {
             base.Spawn(characterData);
+
+            mainCharacterData = characterData as MainCharacterData;
 
             InitMainCharacterComponent();
             SetDefaultWeapon();
@@ -47,7 +51,7 @@ namespace ZombieWar.Character
         private void InitCharacterCombat() { 
             if(mainCharacterCombat == null && !TryGetComponent(out mainCharacterCombat))
             {
-                mainCharacterCombat = gameObject.AddComponent<MainCharacterCombat>();
+                mainCharacterCombat = gameObject.AddComponent<CharacterCombat>();
             }
 
             characterJoystickInput.OnShootByLookInputChanged -= mainCharacterCombat.OnAttackByLook;
@@ -57,7 +61,7 @@ namespace ZombieWar.Character
         private void InitCharacterWeaponHolster()
         {
             if (characterWeaponHolder == null && !TryGetComponent(out characterWeaponHolder)) { 
-                characterWeaponHolder = gameObject.AddComponent<MainCharacterWeaponHolder>();
+                characterWeaponHolder = gameObject.AddComponent<CharacterWeaponHolder>();
                 characterWeaponHolder.Init();
             }
 

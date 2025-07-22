@@ -5,6 +5,8 @@ namespace ZombieWar.Character
 {
     public class CharacterMoveByDirection : MonoBehaviour
     {
+        public Action<float> OnSpeedInputChanged;
+
         private float moveSpeed;
         private float rotationSpeed;
         private Rigidbody rigbody;
@@ -42,6 +44,7 @@ namespace ZombieWar.Character
         public void UpdateMoveDirection(Vector2 direction)
         {
             moveDirection = direction;
+            OnSpeedInputChanged?.Invoke(moveDirection.magnitude);
         }
 
         public void SetTargetNeedToFocus(Vector3 focusDirection)

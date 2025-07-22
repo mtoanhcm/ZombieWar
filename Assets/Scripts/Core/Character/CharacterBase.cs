@@ -2,11 +2,13 @@ using UnityEngine;
 
 namespace ZombieWar.Core
 {
-    public abstract class CharacterBase<T> : MonoBehaviour where T : CharacterBaseData
+    public abstract class CharacterBase : MonoBehaviour, ICharacter
     {
-        protected T characterData;
+        protected CharacterBaseData characterData;
 
-        public virtual void Spawn(T characterData) {
+        public GameObject Self => gameObject;
+
+        public virtual void Spawn<T>(T characterData) where T : CharacterBaseData {
             this.characterData = characterData;
         }
     }
