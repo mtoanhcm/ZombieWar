@@ -33,6 +33,8 @@ namespace ZombieWar.Character
             isAttack = direction != Vector2.zero;
             if (currentWeapon == null || !isAttack) {
                 directionFocus = Vector3.zero;
+                currentWeapon.Attack(false);
+                OnFocusDirectionChanged?.Invoke(directionFocus);
                 return;
             }
 
@@ -47,10 +49,13 @@ namespace ZombieWar.Character
                 if (!isAttack) {
                     break;
                 }
-                currentWeapon.Attack();
+
+                currentWeapon.Attack(true);
 
                 yield return null;
             }
+
+            currentWeapon.Attack(false);
         }
 
         public void AttackByCommand() {
@@ -66,7 +71,7 @@ namespace ZombieWar.Character
                 return;
             }
 
-            currentWeapon.Attack();
+            currentWeapon.Attack(true);
 
             isAttack = false;
         }

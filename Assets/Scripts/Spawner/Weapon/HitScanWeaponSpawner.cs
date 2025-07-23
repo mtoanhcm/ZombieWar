@@ -9,7 +9,7 @@ namespace ZombieWar.Spawner
     {
         private Dictionary<WeaponID, WeaponBase> prefabDic = new Dictionary<WeaponID, WeaponBase>();
 
-        public override bool SpawnWeapon<T>(T config, out IWeapon result, Transform grabHand = null) {
+        public override bool SpawnWeapon<T>(T config, out IWeapon result) {
 
             if(config is not HitScanWeaponConfig) {
                 DebugCustom.LogError("HitScanWeaponSpawner can only spawn HitScanWeaponConfig.");
@@ -38,10 +38,6 @@ namespace ZombieWar.Spawner
             var data = new HitScanWeaponData(config as HitScanWeaponConfig);
             var weapon = Instantiate(weaponPrefab, Vector3.zero, Quaternion.identity);
             weapon.Spawn(data);
-
-            if (grabHand != null) {
-                weapon.SnapToHandGrabPoint(grabHand);
-            }
 
             result = weapon;
             return true;

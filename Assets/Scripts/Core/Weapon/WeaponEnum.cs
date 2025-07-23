@@ -3,11 +3,12 @@ namespace ZombieWar.Core
 {
     public enum WeaponID
     {
-        None,
+        None = 0,
         EAGLE,
         AK12,
+        Shotgun,
 
-        ZombieClaw,
+        ZombieClaw = 100,
     }
 
     public enum WeaponType

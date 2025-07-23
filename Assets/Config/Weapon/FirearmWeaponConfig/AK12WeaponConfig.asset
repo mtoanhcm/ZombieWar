@@ -18,7 +18,7 @@ MonoBehaviour:
   Cooldown: 0.15
   BulletID: 1
   MaxMagazineAmmo: 30
-  AmmoPerShoot: 1
+  BulletPerShoot: 1
   ShootingRange: 10
   SpreadAngle: 5
   SnapPosition: {x: 0.1948, y: -0.013, z: -0.0328}

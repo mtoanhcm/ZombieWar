@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using ZombieWar.Core;
 using ZombieWar.Projectile;
 
@@ -9,6 +11,8 @@ namespace ZombieWar.Weapon
         [Header("Hitscan weapon attribute")]
         [SerializeField]
         private ProjectileSpawner firePoint;
+        [SerializeField]
+        private GameObject muzzleVFX;
 
         private MagazineAttachment magazine;
         private HitScanWeaponData hitScanWeaponData;
@@ -17,6 +21,8 @@ namespace ZombieWar.Weapon
 
         public override void Spawn<T>(T weaponData)
         {
+            muzzleVFX.SetActive(false);
+
             base.Spawn(weaponData);
 
             hitScanWeaponData = weaponData as HitScanWeaponData;
@@ -28,9 +34,10 @@ namespace ZombieWar.Weapon
             return true;
         }
 
-        public override void Attack()
+        public override void Attack(bool isAttack)
         {
             if (!magazine.HasAmmo) {
+                muzzleVFX.SetActive(false);
                 Reload();
                 return;
             }
@@ -39,7 +46,15 @@ namespace ZombieWar.Weapon
                 return;
             }
 
-            ShootBullet();
+            muzzleVFX.SetActive(false);
+            muzzleVFX.SetActive(true);
+            if (hitScanWeaponData.BulletPerShoot <= 1)
+            {
+                ShootSingleBullet();
+            } else
+            {
+                ShootMultiBullet(hitScanWeaponData.BulletPerShoot);
+            }
 
             tempShootDelayTime = Time.time + hitScanWeaponData.Cooldown;
         }
@@ -50,7 +65,7 @@ namespace ZombieWar.Weapon
             magazine.AddAmmo(hitScanWeaponData.MaxMagazineAmmo);
         }
 
-        public void SnapToHandGrabPoint(Transform grabPoint)
+        public override void SnapToHandGrabPoint(Transform grabPoint)
         {
             transform.SetParent(grabPoint);
 
@@ -65,7 +80,53 @@ namespace ZombieWar.Weapon
             targetLayerMask = ObjectLayer.TargetHitLayer(LayerMask.LayerToName(owner.Self.layer));
         }
 
-        private void ShootBullet() {
+        private void ShootMultiBullet(int bullets)
+        {
+            List<Vector3> directions = new List<Vector3>();
+            float startAngle;
+            float step;
+
+            if (bullets % 2 == 1)
+            {
+                int half = bullets / 2;
+                step = (hitScanWeaponData.SpreadAngle * 2f) / (bullets - 1);
+                startAngle = -hitScanWeaponData.SpreadAngle;
+
+                for (int i = 0; i < bullets; i++)
+                {
+                    float currentAngle = startAngle + step * i;
+                    Vector3 dir = Quaternion.AngleAxis(currentAngle, Vector3.up) * firePoint.transform.forward;
+                    directions.Add(dir);
+                }
+            }
+            else
+            {
+                step = (hitScanWeaponData.SpreadAngle * 2f) / bullets;
+                startAngle = -hitScanWeaponData.SpreadAngle + step / 2f;
+
+                for (int i = 0; i < bullets; i++)
+                {
+                    float currentAngle = startAngle + step * i;
+                    Vector3 dir = Quaternion.AngleAxis(currentAngle, Vector3.up) * firePoint.transform.forward;
+                    directions.Add(dir);
+                }
+            }
+
+            foreach(var direct in directions)
+            {
+                var hitData = new HitData()
+                {
+                    Damage = hitScanWeaponData.Damage,
+                    FirePos = firePoint.transform.position,
+                    TargetPos = firePoint.transform.position + direct * hitScanWeaponData.ShootingRange,
+                    OnHitTarget = bullet => firePoint.ReturnBullet(bullet)
+                };
+
+                ShootBullet(hitData, 0.4f, direct);
+            }
+        }
+
+        private void ShootSingleBullet() {
             var shootDirection = ApplyRecoil(firePoint.transform.forward);
             var bulletMoveTime = 0.4f;
 
@@ -77,6 +138,11 @@ namespace ZombieWar.Weapon
                 OnHitTarget = bullet => firePoint.ReturnBullet(bullet)
             };
 
+            ShootBullet(hitData, bulletMoveTime, shootDirection);
+        }
+
+        private void ShootBullet(HitData hitData, float bulletMoveTime, Vector3 shootDirection)
+        {
             if (Physics.Raycast(firePoint.transform.position, shootDirection, out var hit, hitScanWeaponData.ShootingRange, targetLayerMask))
             {
                 bulletMoveTime = (hit.distance / (hitData.TargetPos - hitData.FirePos).magnitude) * bulletMoveTime;

@@ -9,7 +9,7 @@ namespace ZombieWar.Weapon
         [Header("Hit scan weapon attribute")]
         public ProjectileID BulletID;
         public int MaxMagazineAmmo;
-        public int AmmoPerShoot;
+        public int BulletPerShoot;
         public float ShootingRange;
         public float SpreadAngle;
 

@@ -23,7 +23,7 @@ namespace ZombieWar.Weapon
             return false;
         }
 
-        public override void Attack()
+        public override void Attack(bool isAttack)
         {
             if(tempAttackDelayTime > Time.time)
             {
@@ -41,7 +41,7 @@ namespace ZombieWar.Weapon
             targetLayerMask = ObjectLayer.TargetHitLayer(LayerMask.LayerToName(owner.Self.layer));
         }
 
-        public void SnapToHandGrabPoint(Transform grabPoint) { 
+        public override void SnapToHandGrabPoint(Transform grabPoint) { 
             transform.SetParent(grabPoint);
             transform.localPosition = Vector3.zero;
         }
