@@ -3,10 +3,10 @@ using ZombieWar.Core;
 
 namespace ZombieWar.Character
 {
+    [CreateAssetMenu(fileName = "SimpleEnemyConfig", menuName = "Config/CharacterConfig/SimpleEnemyConfig")]
     public class SimpleEnemyConfig : CharacterBaseConfig
     {
-        public float Damage;
-        public float AttackRange;
-        public float AttackSpeed;
+        [Header("Simple enemy attribute")]
+        public WeaponBaseConfig WeaponConfig;
     }
 }

@@ -1,16 +1,23 @@
 using System;
 using UnityEngine;
+using ZombieWar.Core;
 
 namespace ZombieWar.Character
 {
-    public class CharacterMoveByDirection : MonoBehaviour
+    public class CharacterMoveByDirection : MonoBehaviour, IMovement
     {
+        public Action<float> OnSpeedInputChanged;
+
         private float moveSpeed;
         private float rotationSpeed;
         private Rigidbody rigbody;
         private Vector2 moveDirection;
 
         private Vector3 directionNeedToFocus;
+
+        public float MoveSpeed => moveSpeed;
+
+        public bool CanMove => moveSpeed > 0;
 
         private void Awake()
         {
@@ -39,9 +46,10 @@ namespace ZombieWar.Character
             this.rotationSpeed = rotationSpeed;
         }
 
-        public void UpdateMoveDirection(Vector2 direction)
+        public void Move(Vector2 direction)
         {
             moveDirection = direction;
+            OnSpeedInputChanged?.Invoke(moveDirection.magnitude);
         }
 
         public void SetTargetNeedToFocus(Vector3 focusDirection)

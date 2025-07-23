@@ -30,6 +30,8 @@ namespace ZombieWar.Character
 
         public void TakeDamage(float damage)
         {
+            Debug.Log($"{gameObject.name} take damage {damage}");
+
             currentHealth -= Mathf.Abs(damage);
             currentHealth = Mathf.Max(currentHealth, 0);
 

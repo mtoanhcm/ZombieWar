@@ -7,12 +7,7 @@ namespace ZombieWar.Spawner
 {
     public class HitScanWeaponSpawner : WeaponSpawnerBase
     {
-        private Dictionary<WeaponID, WeaponBase> prefabDic;
-
-        public HitScanWeaponSpawner()
-        {
-            prefabDic = new Dictionary<WeaponID, WeaponBase>();
-        }
+        private Dictionary<WeaponID, WeaponBase> prefabDic = new Dictionary<WeaponID, WeaponBase>();
 
         public override bool SpawnWeapon<T>(T config, out IWeapon result, Transform grabHand = null) {
 
@@ -28,7 +23,10 @@ namespace ZombieWar.Spawner
                 weaponPrefab = prefabDic[config.ID] as HitScanWeapon;
             }
             else {
-                weaponPrefab = Resources.Load<HitScanWeapon>($"Weapon/{config.ID}");
+                weaponPrefab = Resources.Load<HitScanWeapon>($"Weapon/HitScanWeapon/{config.ID}");
+                if (weaponPrefab != null) {
+                    prefabDic.Add(config.ID, weaponPrefab);
+                }
             }
 
             if(weaponPrefab == null) {

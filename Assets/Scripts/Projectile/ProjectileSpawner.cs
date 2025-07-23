@@ -18,7 +18,7 @@ namespace ZombieWar.Projectile
                 return;
             }
 
-            straightBulletPool = new ObjectPool<ProjectileBase>(bulletPrefab, 10);
+            straightBulletPool = new ObjectPool<ProjectileBase>(bulletPrefab, 20);
         }
 
         public T SpawnBullet<T>(bool isActiveBullet = true) where T : ProjectileBase

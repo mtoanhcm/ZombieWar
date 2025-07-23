@@ -39,32 +39,7 @@ namespace ZombieWar.Weapon
                 return;
             }
 
-            var shootDirection = ApplyRecoil(firePoint.transform.forward);
-
-            var hitData = new HitData()
-            {
-                Damage = hitScanWeaponData.Damage,
-                FirePos = firePoint.transform.position,
-                TargetPos = firePoint.transform.position + shootDirection * hitScanWeaponData.ShootingRange,
-                OnHitTarget = bullet => firePoint.ReturnBullet(bullet)
-            };
-
-            if (Physics.Raycast(firePoint.transform.position, shootDirection, out var hit, hitScanWeaponData.ShootingRange, targetLayerMask))
-            {
-                hitData.TargetPos = hit.point;
-
-                if (hit.collider.TryGetComponent(out IHealth target))
-                {
-                    hitData.OnHitTarget = bullet =>
-                    {
-                        target.TakeDamage(hitData.Damage);
-                        firePoint.ReturnBullet(bullet);
-                    };
-                }
-            }
-
-            var bullet = firePoint.SpawnBullet<StraightBulletProjectile>(false);
-            bullet.Spawn(0.4f, hitData);
+            ShootBullet();
 
             tempShootDelayTime = Time.time + hitScanWeaponData.Cooldown;
         }
@@ -90,16 +65,46 @@ namespace ZombieWar.Weapon
             targetLayerMask = ObjectLayer.TargetHitLayer(LayerMask.LayerToName(owner.Self.layer));
         }
 
+        private void ShootBullet() {
+            var shootDirection = ApplyRecoil(firePoint.transform.forward);
+            var bulletMoveTime = 0.4f;
+
+            var hitData = new HitData()
+            {
+                Damage = hitScanWeaponData.Damage,
+                FirePos = firePoint.transform.position,
+                TargetPos = firePoint.transform.position + shootDirection * hitScanWeaponData.ShootingRange,
+                OnHitTarget = bullet => firePoint.ReturnBullet(bullet)
+            };
+
+            if (Physics.Raycast(firePoint.transform.position, shootDirection, out var hit, hitScanWeaponData.ShootingRange, targetLayerMask))
+            {
+                bulletMoveTime = (hit.distance / (hitData.TargetPos - hitData.FirePos).magnitude) * bulletMoveTime;
+                hitData.TargetPos = hit.point;
+
+                if (hit.collider.TryGetComponent(out IHealth target))
+                {
+                    hitData.OnHitTarget = bullet =>
+                    {
+                        target.TakeDamage(hitData.Damage);
+                        firePoint.ReturnBullet(bullet);
+                    };
+                }
+            }
+
+            var bullet = firePoint.SpawnBullet<StraightBulletProjectile>(false);
+            bullet.Spawn(bulletMoveTime, hitData);
+        }
+
         private Vector3 ApplyRecoil(Vector3 baseDirection) {
-            float angleInRad = hitScanWeaponData.SpreadAngle * Mathf.Deg2Rad;
-
-            Vector3 random = Random.insideUnitCircle.normalized;
-            Vector3 axis = Vector3.Cross(baseDirection, random.x * Vector3.up + random.y * Vector3.right);
-
-            float randomAngle = Random.Range(0f, angleInRad);
-            Quaternion rotation = Quaternion.AngleAxis(randomAngle * Mathf.Rad2Deg, axis);
-
+            float angle = Random.Range(-hitScanWeaponData.SpreadAngle, hitScanWeaponData.SpreadAngle);
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
             return rotation * baseDirection;
+        }
+
+        public override float GetAttackRange()
+        {
+            return hitScanWeaponData.ShootingRange;
         }
     }
 }

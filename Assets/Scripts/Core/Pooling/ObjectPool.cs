@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ZombieWar.Core
@@ -10,7 +11,7 @@ namespace ZombieWar.Core
         private readonly Transform parentTransform;
         private readonly int sizeIncrease;
 
-        private const int SIZE_NEED_INCREASE = 3;
+        private const int SIZE_NEED_INCREASE = 5;
 
         public ObjectPool(T prefab, int size, Transform parentTransform = null)
         {
@@ -48,12 +49,14 @@ namespace ZombieWar.Core
             availableObjects.Enqueue(obj);
         }
 
-        private void ExpandPool(int size) {
+        private async void ExpandPool(int size) {
             for (var i = 0; i < size; i++)
             {
                 T newObject = Object.Instantiate(prefab, parentTransform);
                 newObject.gameObject.SetActive(false);
                 availableObjects.Enqueue(newObject);
+
+                await Task.Delay(5);
             }
         }
     }

@@ -21,5 +21,7 @@ namespace ZombieWar.Core
         public abstract bool AddAttachment();
 
         public abstract void SetOwner(ICombat owner);
+
+        public abstract float GetAttackRange();
     }
 }
