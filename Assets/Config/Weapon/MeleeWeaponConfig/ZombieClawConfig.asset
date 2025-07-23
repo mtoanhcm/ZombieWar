@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d50c1b10ecd1ea439da14abc7331566, type: 3}
   m_Name: ZombieClawConfig
   m_EditorClassIdentifier: 
-  ID: 3
+  ID: 100
   Type: 0
   Damage: 10
   Cooldown: 2

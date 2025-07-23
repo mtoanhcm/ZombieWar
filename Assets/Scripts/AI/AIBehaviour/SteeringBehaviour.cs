@@ -33,7 +33,7 @@ namespace ZombieWar.AI
             neighbors = new Collider[32];
         }
 
-        public Vector3 SeekToTarget(Vector3 targetPosition, bool useSeparation = false, bool useObstacleAvoidance = false)
+        public Vector3 SeekToTarget(Vector3 targetPosition, bool useSeparation = true, bool useObstacleAvoidance = true)
         {
             Vector3 moveDir = Seek(targetPosition);
 

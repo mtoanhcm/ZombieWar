@@ -49,6 +49,7 @@ namespace ZombieWar.Character
             }
 
             characterCombat.SetWeapon(weapon);
+            weapon.SnapToHandGrabPoint(weaponGrabPoint);
         }
 
         private void InitCharacterComponent() {
@@ -69,7 +70,7 @@ namespace ZombieWar.Character
 
             //Check Create weapon default for enemy
             if (weaponHolder.HasNoWeapon()) {
-                WeaponSpawnerManager.Instance.SpawnMeleeWeapon(enemyData.WeaponConfig, out IWeapon weapon, weaponGrabPoint);
+                WeaponSpawnerManager.Instance.SpawnMeleeWeapon(enemyData.WeaponConfig, out IWeapon weapon);
                 weaponHolder.AddWeapon(weapon);
             }
         }

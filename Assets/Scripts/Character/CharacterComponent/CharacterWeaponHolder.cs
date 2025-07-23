@@ -29,7 +29,8 @@ namespace ZombieWar.Character
             }
 
             weaponSlots[slot] = weapon;
-
+            weapon.Self.transform.SetParent(transform);
+            weapon.Self.SetActive(false);
             DebugCustom.Log($"Weapon {weapon.BaseData.ID} added to slot {slot} in MainCharacterWeaponHolder.", Color.green);
 
             return true;
@@ -53,6 +54,7 @@ namespace ZombieWar.Character
         {
             if(weaponSlots.TryGetValue(slot, out weapon) && weapon != null)
             {
+                weapon.Self.SetActive(true);
                 return true;
             }
 
@@ -68,6 +70,12 @@ namespace ZombieWar.Character
             }
 
             return true;
+        }
+
+        public override void PutBackWeapon(IWeapon weapon)
+        {
+            weapon.Self.SetActive(false);
+            weapon.Self.transform.SetParent(transform);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace ZombieWar.Character
     {
         public Action<Vector2> OnMoveInputChanged;
         public Action<Vector2> OnShootByLookInputChanged;
+        public Action<CharacterWeaponEquipSlot> OnPickWeaponSlot;
+        public Action OnUseAbility;
 
         private CharacterInput characterInput;
 
@@ -25,6 +27,10 @@ namespace ZombieWar.Character
 
             characterInput.Player.Look.performed += OnLook;
             characterInput.Player.Look.canceled += OnLook;
+
+            characterInput.Player.PickWeaponSlot2.performed += OnPickWeaponSlot2;
+            characterInput.Player.PickWeaponSlot4.performed += OnPickWeaponSlot4;
+            characterInput.Player.UseAbility.performed += UseAbility;
         }
 
         private void OnDisable()
@@ -34,6 +40,11 @@ namespace ZombieWar.Character
 
             characterInput.Player.Look.performed -= OnLook;
             characterInput.Player.Look.canceled -= OnLook;
+
+            characterInput.Player.PickWeaponSlot2.performed -= OnPickWeaponSlot2;
+            characterInput.Player.PickWeaponSlot4.performed -= OnPickWeaponSlot4;
+
+            characterInput.Player.UseAbility.performed -= UseAbility;
 
             characterInput.Disable();
         }
@@ -46,6 +57,21 @@ namespace ZombieWar.Character
         private void OnMove(InputAction.CallbackContext context)
         {
             OnMoveInputChanged?.Invoke(context.ReadValue<Vector2>());
+        }
+
+        private void OnPickWeaponSlot2(InputAction.CallbackContext context)
+        {
+            OnPickWeaponSlot?.Invoke(CharacterWeaponEquipSlot.Slot2);
+        }
+
+        private void OnPickWeaponSlot4(InputAction.CallbackContext context)
+        {
+            OnPickWeaponSlot?.Invoke(CharacterWeaponEquipSlot.Slot4);
+        }
+
+        private void UseAbility(InputAction.CallbackContext context)
+        {
+            OnUseAbility?.Invoke();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace ZombieWar.Core
         public Transform GripPos;
         public WeaponBaseData BaseData => weaponBaseData;
 
+        public GameObject Self => gameObject;
+
         protected ICombat owner;
         protected WeaponBaseData weaponBaseData;
 
@@ -17,11 +19,13 @@ namespace ZombieWar.Core
             weaponBaseData = weaponData;
         }
 
-        public abstract void Attack();
+        public abstract void Attack(bool isAttack);
         public abstract bool AddAttachment();
 
         public abstract void SetOwner(ICombat owner);
 
         public abstract float GetAttackRange();
+
+        public abstract void SnapToHandGrabPoint(Transform grabPoint);
     }
 }

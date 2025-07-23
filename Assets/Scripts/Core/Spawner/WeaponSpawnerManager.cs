@@ -19,13 +19,13 @@ namespace ZombieWar.Core
             }
         }
 
-        public void SpawnHitScanWeapon(WeaponBaseConfig config, out IWeapon weapon, Transform grabHand) {
-            hitScanWeaponSpawner.SpawnWeapon(config, out weapon, grabHand);
+        public void SpawnHitScanWeapon(WeaponBaseConfig config, out IWeapon weapon) {
+            hitScanWeaponSpawner.SpawnWeapon(config, out weapon);
         }
 
-        public void SpawnMeleeWeapon(WeaponBaseConfig config, out IWeapon weapon, Transform grabHand)
+        public void SpawnMeleeWeapon(WeaponBaseConfig config, out IWeapon weapon)
         {
-            meleeWeaponSpawner.SpawnWeapon(config, out weapon, grabHand);
+            meleeWeaponSpawner.SpawnWeapon(config, out weapon);
         }
     }
 }

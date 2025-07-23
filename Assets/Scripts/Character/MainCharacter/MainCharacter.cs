@@ -18,6 +18,7 @@ namespace ZombieWar.Character
         private CharacterModelView characterModelView;
         private CharacterWeaponHolder characterWeaponHolder;
         private CharacterCombat mainCharacterCombat;
+        private CharacterAbilityHolder characterAbilityHolder;
 
         public override void Spawn<T>(T characterData)
         {
@@ -26,12 +27,20 @@ namespace ZombieWar.Character
             mainCharacterData = characterData as MainCharacterData;
 
             InitMainCharacterComponent();
-            SetDefaultWeapon();
+
+            ChangeWeapon(CharacterWeaponEquipSlot.Slot2);
         }
 
-        private void SetDefaultWeapon() {
-            var defaultWeapon = characterWeaponHolder.GetWeapon(CharacterWeaponEquipSlot.Slot4, out var weapon);
-            mainCharacterCombat.SetWeapon(weapon);
+        private void ChangeWeapon(CharacterWeaponEquipSlot slot) {
+            if(characterWeaponHolder.GetWeapon(slot, out var weapon))
+            {
+                if (mainCharacterCombat.CurrentWeapon != null) {
+                    characterWeaponHolder.PutBackWeapon(mainCharacterCombat.CurrentWeapon);
+                }
+
+                mainCharacterCombat.SetWeapon(weapon);
+                weapon.SnapToHandGrabPoint(characterModelView.WeaponGrabSocket);
+            }
         }
 
         #region Initialization Components
@@ -41,11 +50,17 @@ namespace ZombieWar.Character
             InitCharacterJoystickInput();
             InitCharacterModelView();
 
-            InitCharacterWeaponHolster();
+            InitCharacterWeaponHolder();
+            InitCharacterAbilityHolder();
             InitCharacterCombat();
 
             InitCharacterMovement();
             InitCharacterAnimation();
+        }
+
+        private void InitCharacterAbilityHolder() {
+            //Hardcode
+            characterAbilityHolder = gameObject.GetComponentInChildren<CharacterAbilityHolder>();
         }
 
         private void InitCharacterCombat() { 
@@ -58,7 +73,7 @@ namespace ZombieWar.Character
             characterJoystickInput.OnShootByLookInputChanged += mainCharacterCombat.AttackByAuto;
         }
 
-        private void InitCharacterWeaponHolster()
+        private void InitCharacterWeaponHolder()
         {
             if (characterWeaponHolder == null && !TryGetComponent(out characterWeaponHolder)) { 
                 characterWeaponHolder = gameObject.AddComponent<CharacterWeaponHolder>();
@@ -66,7 +81,7 @@ namespace ZombieWar.Character
             }
 
             foreach (var config in startWeapons) { 
-                WeaponSpawnerManager.Instance.SpawnHitScanWeapon(config, out IWeapon weapon, characterModelView.WeaponGrabSocket);
+                WeaponSpawnerManager.Instance.SpawnHitScanWeapon(config, out IWeapon weapon);
                 characterWeaponHolder.AddWeapon(weapon);
             }
         }
@@ -103,6 +118,13 @@ namespace ZombieWar.Character
             {
                 characterJoystickInput = gameObject.AddComponent<CharacterJoystickInput>();
             }
+
+            characterJoystickInput.OnPickWeaponSlot -= ChangeWeapon;
+            characterJoystickInput.OnPickWeaponSlot += ChangeWeapon;
+
+            Action useAbility = () => characterAbilityHolder.ActiveAbility(transform.position);
+            characterJoystickInput.OnUseAbility -= useAbility;
+            characterJoystickInput.OnUseAbility += useAbility;
         }
 
         private void InitCharacterHealth()
