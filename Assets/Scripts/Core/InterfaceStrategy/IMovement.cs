@@ -6,6 +6,6 @@ namespace ZombieWar.Core
     {
         float MoveSpeed { get; }
         bool CanMove { get; }
-        void Move(Vector3 direction);
+        void Move(Vector2 direction);
     }
 }

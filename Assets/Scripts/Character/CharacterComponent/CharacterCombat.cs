@@ -7,21 +7,18 @@ namespace ZombieWar.Character
 {
     public class CharacterCombat : MonoBehaviour, ICombat
     {
-        public bool IsAttackin() => isAttacking;
+        public bool CanAttack => isAttack;
+        public GameObject Self => gameObject;
+        public IWeapon CurrentWeapon => currentWeapon;
+
         public Action<Vector3> OnFocusDirectionChanged;
         public Action<IWeapon> OnCurrentWeaponChanged;
         public Action<bool> OnAttackStateChanged;
 
-        private bool isAttacking;
+        private bool isAttack;
         private Vector3 directionFocus;
         private IWeapon currentWeapon;
 
-        public GameObject Self => gameObject;
-
-        private void Update()
-        {
-            
-        }
 
         public void SetWeapon(IWeapon weapon) {
             currentWeapon = weapon;
@@ -29,12 +26,12 @@ namespace ZombieWar.Character
             OnCurrentWeaponChanged?.Invoke(currentWeapon);
         }
 
-        public void OnAttackByLook(Vector2 direction) {
+        public void AttackByAuto(Vector2 direction) {
 
             StopAllCoroutines();
 
-            isAttacking = direction != Vector2.zero;
-            if (currentWeapon == null || !isAttacking) {
+            isAttack = direction != Vector2.zero;
+            if (currentWeapon == null || !isAttack) {
                 directionFocus = Vector3.zero;
                 return;
             }
@@ -47,7 +44,7 @@ namespace ZombieWar.Character
             while (true) {
                 OnFocusDirectionChanged?.Invoke(directionFocus);
 
-                if (!isAttacking) {
+                if (!isAttack) {
                     break;
                 }
                 currentWeapon.Attack();
@@ -56,15 +53,22 @@ namespace ZombieWar.Character
             }
         }
 
-        public void OnAttackByCommand(bool isAttack) { 
-            isAttacking = isAttack;
-            OnAttackStateChanged?.Invoke(isAttacking);
+        public void AttackByCommand() {
+            if (isAttack)
+            {
+                return;
+            }
 
-            if (currentWeapon == null || !isAttacking) {
+            isAttack = true;
+            OnAttackStateChanged?.Invoke(isAttack);
+            if (currentWeapon == null)
+            {
                 return;
             }
 
             currentWeapon.Attack();
+
+            isAttack = false;
         }
     }
 }

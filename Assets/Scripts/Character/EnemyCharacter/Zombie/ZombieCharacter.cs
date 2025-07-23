@@ -1,14 +1,18 @@
-using Codice.CM.Client.Differences.Graphic;
 using System;
 using UnityEngine;
 using ZombieWar.Core;
+using ZombieWar.AI;
 
 namespace ZombieWar.Character
 {
     public class ZombieCharacter : CharacterBase
     {
-        private SimpleEnemyData enemyData;
+        [SerializeField]
+        private Transform weaponGrabPoint;
 
+        private AIBrainBase aiBrain;
+
+        private SimpleEnemyData enemyData;
         private CharacterMoveByDirection moveByDirection;
         private CharacterHealth characterHealth;
         private CharacterCombat characterCombat;
@@ -19,14 +23,26 @@ namespace ZombieWar.Character
         {
             base.Spawn(characterData);
 
+            SetLayer(LayerMask.NameToLayer(ObjectLayer.EnemyLayerName));
             enemyData = characterData as SimpleEnemyData;
 
             InitCharacterComponent();
             SetWeapon();
+
+            if (aiBrain == null || !TryGetComponent(out aiBrain)) {
+                aiBrain = gameObject.AddComponent<AINoobBrain>();
+            }
+
+            aiBrain.Init(moveByDirection, characterCombat, characterHealth, null);
+            aiBrain.SetTarget(PlayerManager.Instance.MainCharacter);
+        }
+
+        private void SetLayer(int layerIndex) {
+            gameObject.layer = layerIndex;
         }
 
         private void SetWeapon() {
-            if (!weaponHolder.GetWeapon(CharacterWeaponEquipSlot.Slot1, out var weapon))
+            if (!weaponHolder.GetWeapon(CharacterWeaponEquipSlot.Slot5, out var weapon))
             {
                 DebugCustom.LogWarning("No weapon found in weapon holder for ZombieCharacter. Please ensure a weapon is assigned.");
                 return;
@@ -36,8 +52,9 @@ namespace ZombieWar.Character
         }
 
         private void InitCharacterComponent() {
-            InitMovementComponent();
             InitHealthComponent();
+            InitMovementComponent();
+
             InitWeaponHolderComponent();
             InitCharacterCombat();
             InitCharacterAnimation();
@@ -50,8 +67,11 @@ namespace ZombieWar.Character
                 weaponHolder.Init();
             }
 
-            WeaponSpawnerManager.Instance.SpawnMeleeWeapon(enemyData.WeaponConfig, out IWeapon weapon, null);
-            weaponHolder.AddWeapon(weapon);
+            //Check Create weapon default for enemy
+            if (weaponHolder.HasNoWeapon()) {
+                WeaponSpawnerManager.Instance.SpawnMeleeWeapon(enemyData.WeaponConfig, out IWeapon weapon, weaponGrabPoint);
+                weaponHolder.AddWeapon(weapon);
+            }
         }
 
         private void InitCharacterAnimation()
@@ -60,11 +80,19 @@ namespace ZombieWar.Character
                 characterSimpleAnimation = gameObject.AddComponent<CharacterSimpleAnimation>();
             }
 
+            characterSimpleAnimation.Init();
+
             characterCombat.OnAttackStateChanged -= characterSimpleAnimation.OnAttackStateChange;
             characterCombat.OnAttackStateChanged += characterSimpleAnimation.OnAttackStateChange;
 
             moveByDirection.OnSpeedInputChanged -= characterSimpleAnimation.OnSpeedChange;
             moveByDirection.OnSpeedInputChanged += characterSimpleAnimation.OnSpeedChange;
+
+            characterHealth.OnDeath -= characterSimpleAnimation.OnDeathStateEnter;
+            characterHealth.OnDeath += characterSimpleAnimation.OnDeathStateEnter;
+
+            characterSimpleAnimation.OnHitByAttackAnimation -= characterCombat.AttackByCommand;
+            characterSimpleAnimation.OnHitByAttackAnimation += characterCombat.AttackByCommand;
         }
 
         private void InitCharacterCombat()
@@ -81,6 +109,9 @@ namespace ZombieWar.Character
             }
 
             characterHealth.Init(characterData.MaxHealth);
+
+            characterHealth.OnDeath -= OnCharacterDeath;
+            characterHealth.OnDeath += OnCharacterDeath;
         }
 
         private void InitMovementComponent() {
@@ -89,6 +120,11 @@ namespace ZombieWar.Character
             }
 
             moveByDirection.Init(characterData.MovementSpeed, characterData.RotateSpeed);
+        }
+
+        private void OnCharacterDeath() {
+            SetLayer(LayerMask.NameToLayer(ObjectLayer.EnemyDeathLayerName));
+            OnDeath?.Invoke(this);
         }
     }
 }

@@ -58,5 +58,16 @@ namespace ZombieWar.Character
 
             return false;
         }
+
+        public override bool HasNoWeapon()
+        {
+            foreach (var slot in weaponSlots) {
+                if (slot.Value != null) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

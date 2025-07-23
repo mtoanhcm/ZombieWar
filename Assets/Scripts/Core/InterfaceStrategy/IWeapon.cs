@@ -5,6 +5,7 @@ namespace ZombieWar.Core
     public interface IWeapon
     {
         WeaponBaseData BaseData { get; }
+        float GetAttackRange();
         void Attack();
         void SetOwner(ICombat owner);
         bool AddAttachment();

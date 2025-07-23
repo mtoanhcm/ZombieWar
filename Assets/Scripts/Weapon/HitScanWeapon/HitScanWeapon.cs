@@ -77,8 +77,6 @@ namespace ZombieWar.Weapon
                 OnHitTarget = bullet => firePoint.ReturnBullet(bullet)
             };
 
-            DebugCustom.DrawRay(firePoint.transform.position, shootDirection * hitScanWeaponData.ShootingRange, Color.red, 5f);
-
             if (Physics.Raycast(firePoint.transform.position, shootDirection, out var hit, hitScanWeaponData.ShootingRange, targetLayerMask))
             {
                 bulletMoveTime = (hit.distance / (hitData.TargetPos - hitData.FirePos).magnitude) * bulletMoveTime;
@@ -102,6 +100,11 @@ namespace ZombieWar.Weapon
             float angle = Random.Range(-hitScanWeaponData.SpreadAngle, hitScanWeaponData.SpreadAngle);
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
             return rotation * baseDirection;
+        }
+
+        public override float GetAttackRange()
+        {
+            return hitScanWeaponData.ShootingRange;
         }
     }
 }

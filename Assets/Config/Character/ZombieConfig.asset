@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 100
   MaxHealth: 20
-  MovementSpeed: 10
+  MovementSpeed: 2
   RotateSpeed: 5
   WeaponConfig: {fileID: 11400000, guid: cd75a128ff69f0941af3640d27639f03, type: 2}

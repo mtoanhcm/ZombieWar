@@ -15,6 +15,7 @@ namespace ZombieWar.Weapon
             base.Spawn(weaponData);
 
             meleeWeaponData = weaponData as MeleeWeaponData;
+            hits = new Collider[10];
         }
 
         public override bool AddAttachment()
@@ -41,7 +42,8 @@ namespace ZombieWar.Weapon
         }
 
         public void SnapToHandGrabPoint(Transform grabPoint) { 
-        
+            transform.SetParent(grabPoint);
+            transform.localPosition = Vector3.zero;
         }
 
         private void ApplyConeDamage() {
@@ -52,6 +54,12 @@ namespace ZombieWar.Weapon
 
             float cosHalfAngle = Mathf.Cos(meleeWeaponData.AttackAngle * 0.5f * Mathf.Deg2Rad);
             foreach (var hit in hits) {
+
+                if(hit == null)
+                {
+                    continue;
+                }
+
                 if(!hit.gameObject.TryGetComponent(out IHealth health))
                 {
                     continue;
@@ -64,6 +72,11 @@ namespace ZombieWar.Weapon
                     health.TakeDamage(meleeWeaponData.Damage);
                 }
             }
+        }
+
+        public override float GetAttackRange()
+        {
+            return meleeWeaponData.AttackRange;
         }
     }
 }

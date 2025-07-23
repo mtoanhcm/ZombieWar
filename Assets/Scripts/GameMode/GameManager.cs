@@ -1,9 +1,12 @@
 using UnityEngine;
 using ZombieWar.Character;
+using ZombieWar.Core;
 
 namespace ZombieWar.GameMode {
     public class GameManager : MonoBehaviour
     {
+        public CharacterBase MainCharacter => mainCharacter;
+
         [SerializeField]
         private MainCharacter mainCharacter;
         [SerializeField]

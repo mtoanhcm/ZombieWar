@@ -54,8 +54,8 @@ namespace ZombieWar.Character
                 mainCharacterCombat = gameObject.AddComponent<CharacterCombat>();
             }
 
-            characterJoystickInput.OnShootByLookInputChanged -= mainCharacterCombat.OnAttackByLook;
-            characterJoystickInput.OnShootByLookInputChanged += mainCharacterCombat.OnAttackByLook;
+            characterJoystickInput.OnShootByLookInputChanged -= mainCharacterCombat.AttackByAuto;
+            characterJoystickInput.OnShootByLookInputChanged += mainCharacterCombat.AttackByAuto;
         }
 
         private void InitCharacterWeaponHolster()
@@ -122,8 +122,8 @@ namespace ZombieWar.Character
                 characterMoveByDirection = gameObject.AddComponent<CharacterMoveByDirection>();
             }
 
-            characterJoystickInput.OnMoveInputChanged -= characterMoveByDirection.UpdateMoveDirection;
-            characterJoystickInput.OnMoveInputChanged += characterMoveByDirection.UpdateMoveDirection;
+            characterJoystickInput.OnMoveInputChanged -= characterMoveByDirection.Move;
+            characterJoystickInput.OnMoveInputChanged += characterMoveByDirection.Move;
 
             mainCharacterCombat.OnFocusDirectionChanged -= characterMoveByDirection.SetTargetNeedToFocus;
             mainCharacterCombat.OnFocusDirectionChanged += characterMoveByDirection.SetTargetNeedToFocus;

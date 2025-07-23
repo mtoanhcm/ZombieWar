@@ -15,5 +15,6 @@ namespace ZombieWar.Core
         public abstract bool GetWeapon(CharacterWeaponEquipSlot slot, out IWeapon weapon);
         public abstract bool AddWeapon(IWeapon weaponData);
         public abstract bool RemoveWeapon(IWeapon weaponData);
+        public abstract bool HasNoWeapon();
     }
 }
