@@ -19,6 +19,9 @@ namespace ZombieWar.Ability
         public GameObject SmokeReadyAirForceVFX;
         public GameObject ExploseVFX;
 
+        [Header("SFX")]
+        public AudioSource sfx;
+
         public async override void ActiveAbility(Vector3 position)
         {
             PrepareAbility();
@@ -41,9 +44,10 @@ namespace ZombieWar.Ability
 
             async void CallExploseVFX()
             {
+                
                 var explose = Instantiate(ExploseVFX);
                 explose.transform.position = position;
-
+                sfx.Play();
                 await Task.Delay(3000);
 
                 Destroy(explose);
