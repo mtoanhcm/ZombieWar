@@ -13,6 +13,8 @@ namespace ZombieWar.Weapon
         private ProjectileSpawner firePoint;
         [SerializeField]
         private GameObject muzzleVFX;
+        [SerializeField]
+        private AudioSource fireSource;
 
         private MagazineAttachment magazine;
         private HitScanWeaponData hitScanWeaponData;
@@ -48,6 +50,8 @@ namespace ZombieWar.Weapon
 
             muzzleVFX.SetActive(false);
             muzzleVFX.SetActive(true);
+
+            fireSource.Play();
             if (hitScanWeaponData.BulletPerShoot <= 1)
             {
                 ShootSingleBullet();
