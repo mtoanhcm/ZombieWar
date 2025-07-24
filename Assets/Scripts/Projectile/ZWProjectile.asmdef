@@ -1,0 +1,16 @@
+{
+    "name": "ZWProjectile",
+    "rootNamespace": "ZombieWar.Projectile",
+    "references": [
+        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

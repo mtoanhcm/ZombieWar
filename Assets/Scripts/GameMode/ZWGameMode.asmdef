@@ -1,0 +1,17 @@
+{
+    "name": "ZWGameMode",
+    "rootNamespace": "ZombieWar.GameMode",
+    "references": [
+        "GUID:cf037a591e3b0b94e9e6c3e4f4b932b9",
+        "GUID:a7c868a5629712b4e868d706764cd70f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
